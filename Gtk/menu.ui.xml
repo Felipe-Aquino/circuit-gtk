@@ -1,0 +1,53 @@
+<interface>
+  <!-- menubar -->
+  <menu id='menu-example'>
+    <submenu>
+      <attribute name='label' translatable='yes'>_Component</attribute>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Capacitor</attribute>
+          <attribute name='action'>win.new_capacitor</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Resistor</attribute>
+          <attribute name='action'>win.new_resistor</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Voltage</attribute>
+          <attribute name='action'>win.new_voltage</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Wire</attribute>
+          <attribute name='action'>win.new_wire</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Quit</attribute>
+          <attribute name='action'>app.quit</attribute>
+          <attribute name='accel'>&lt;Primary&gt;q</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu>
+      <attribute name='label' translatable='yes'>_Execute</attribute>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>_Start</attribute>
+          <attribute name='action'>win.start</attribute>
+          <attribute name='accel'>&lt;Primary&gt;s</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Pause</attribute>
+          <attribute name='action'>win.pause</attribute>
+          <attribute name='accel'>&lt;Primary&gt;p</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>_Stop</attribute>
+          <attribute name='action'>win.stop</attribute>
+          <attribute name='accel'>&lt;Primary&gt;x</attribute>
+        </item>
+      </section>
+    </submenu> 
+  </menu>
+</interface>

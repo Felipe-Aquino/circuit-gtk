@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <rect
+  x="230"
+  y="359"
+  width="20"
+  height="70"
+  fill="white">
+
+     <rect
+     x="230"
+     y="374"
+     width="20"
+     height="40"
+     fill="black" />
+
+     <rect
+     x="232"
+     y="376"
+     width="16"
+     height="36"
+     fill="white" />
+
+     <rect
+     x="240"
+     y="359"
+     width="2"
+     height="15"
+     fill="black" />
+
+     <rect
+     x="240"
+     y="414"
+     width="2"
+     height="15"
+     fill="black" />
+
+  </rect>
+</svg>
