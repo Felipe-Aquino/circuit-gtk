@@ -3,6 +3,11 @@ all: generateobj compile
 
 GTKFLAGS:= `pkg-config gtkmm-3.0 --cflags --libs`
 generateobj:
+	g++ -std=c++11 -c Shapes/*.cpp $(GTKFLAGS)
+	g++ -std=c++11 -c Useful/*.cpp $(GTKFLAGS)
+	g++ -std=c++11 -c Useful/Math/*.cpp 
+	g++ -std=c++11 -c Useful/tinyxml/*.cpp
+	g++ -std=c++11 -c Application/Components/*.cpp $(GTKFLAGS)
 	g++ -std=c++11 -c Application/*.cpp $(GTKFLAGS)
 	g++ -std=c++11 -c Gtk/*.cpp $(GTKFLAGS)
 
