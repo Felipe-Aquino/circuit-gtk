@@ -15,8 +15,8 @@ In order to make a shape for a Component, now you can read simple svg files (onl
 To see one example of implementation just open Resistor.cpp. If you want to make a svg check the file resistor.svg and you will understand how it works.  
 
 ### Todo
-- [*]  Create the capacitor component.
-- [*]  Create a functional popup menu.
+- [x]  Create the capacitor component.
+- [x]  Create a functional popup menu.
 - [ ]  Create a better makefile.
 - [ ]  Comment all the code.
 - [ ]  Remove useless inherit code from the old [circuit](https://github.com/Felipe-Aquino/circuit/tree/develop) project.
