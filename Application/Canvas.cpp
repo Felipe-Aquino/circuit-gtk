@@ -28,6 +28,17 @@ void Canvas::RemoveComponent(int i) {
     _components.erase(_components.begin() + i);
 }
 
+Component* Canvas::FindComponent(int x, int y){
+    x = (int)_spacing*((int)(0.5 + x/_spacing));
+    y = (int)_spacing*((int)(0.5 + y/_spacing));
+    cout << "Onde: " << x << " " << y << endl;
+    for(auto c : _components){
+        if(c->IsInside(x, y))
+            return c;
+    }
+    return NULL;
+}
+
 int Canvas::GetComponentsNumber(){
     return _components.size();
 }
@@ -126,6 +137,11 @@ void Canvas::Disconnect(Component* c){
         cout << "Created nodes number: " << createdNodes.size() <<endl;
     } 
 }
+
+void Canvas::UpdateCompSimulation(CircuitSimulator* s){
+    s->UpdateComponents(_components);
+}
+
 
 Canvas::~Canvas() {
     for(int i = 0; i < 50; i++){

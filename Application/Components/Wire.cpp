@@ -6,6 +6,7 @@ Wire::Wire(): p0(), p1() {
     _delete = false;
     _drawMenu = false;
     _voltage = 0.0;
+    _flow = 1.0;
 }
 
 void Wire::Draw(const Cairo::RefPtr<Cairo::Context>& cr){
@@ -25,6 +26,11 @@ void Wire::Draw(const Cairo::RefPtr<Cairo::Context>& cr){
 }
 
 bool Wire::IsReady() { return _secondClick; }
+
+void Wire::UpdateProperties(Matrix& x){
+    _current = _flow*x.get(_current_col, 0);  // _flow sets the right direction of the current
+    cout << "W - " << "V: " << _voltage << " I: " << _current << endl;
+}
 
 void Wire::MouseOverEvent(int x, int y){
     if(_firstClick && !_secondClick){
@@ -62,26 +68,6 @@ void Wire::MouseClickEvent(int button, int state, int x, int y){
             _nodes.push_back(new Node(x, y));
         }
     }
-    /*if(button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN){
-        if(_secondClick){
-            double ang2 = type*3.1415926/2 - ang;
-            Point p(x,y);
-            Vector v(p0, p);
-            Vector axis(0,0,1);
-            v.rotate(axis, ang2);
-            if(_dimensions.isInside(p0.x+v.x, p0.y+v.y)){
-                _drawMenu = true;
-                _menu.SetXY(x, y);
-                cout << x << " " << y <<endl;
-            }
-        }
-    }
-    if(state == GLUT_DOWN){
-        if(!_menu.MouseOverMenu(x, y) && _drawMenu){
-            _drawMenu = false;
-        } 
-    }
-    if(_drawMenu) _menu.MouseClickEvent(button, state, x, y);*/
 }
 
 void Wire::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, int& curr_col){
@@ -90,15 +76,13 @@ void Wire::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, int& c
         m.set(row, curr_col++, 1);
         cout << "W N0: " << _nodes[0]->info->number << endl;
         cout << "W N1: " << _nodes[1]->info->number << endl;
-        if(_nodes[1]->info->isReference){
-            m.set(next_free_row, _nodes[1]->info->number, 1);
-            m.set(next_free_row, _nodes[0]->info->number, -1);
-            b.set(next_free_row, 0, _voltage);
-        } else {
-            m.set(next_free_row, _nodes[1]->info->number, -1);
-            m.set(next_free_row, _nodes[0]->info->number, 1);
-            b.set(next_free_row, 0, _voltage);
-        }
+
+        m.set(next_free_row, _nodes[1]->info->number, 1);
+        m.set(next_free_row, _nodes[0]->info->number, -1);
+        b.set(next_free_row, 0, _voltage);
+
+        _flow = _nodes[1]->info->isReference ? -1.0 : 1.0;
+        
         next_free_row++;
     } else {
         cout << "2W N0: " << _nodes[0]->info->number << endl;
@@ -107,6 +91,15 @@ void Wire::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, int& c
     }
     
     _checked = true;
+}
+
+bool Wire::IsInside(int x, int y){
+    double ang2 = type*3.1415926/2 - ang;
+    Point p(x,y);
+    Vector v(p0, p);
+    Vector axis(0,0,1);
+    v.rotate(axis, ang2);
+    return _dimensions.isInside(p0.x+v.x, p0.y+v.y);
 }
 
 Wire::~Wire(){

@@ -19,32 +19,68 @@
 
     class Component {
     protected:
-        Shapes::Rectangle _dimensions;
         CompID _id;
         vector<Node*> _nodes;
         bool _delete;
         float _voltage, _current;
+        float _dt;
 
     public:
+        /* Contructors */
         Component(){
             _delete = false;
             _voltage = _current = 0.0;
+            _dt = 0.01;
         };
-        Component(Component& c): _dimensions(c._dimensions){
+
+        Component(Component& c){
             _id = c._id;
             _delete = false;
         }
 
+        /*
+        * Draw method. 
+        */
         virtual void Draw(const Cairo::RefPtr<Cairo::Context>& cr) = 0;
         virtual bool IsReady() = 0;
+
+        /*
+        * Returns the id of the component.
+        */
         CompID GetID(){ return _id; }
         bool ToDelete() { return _delete; }
         void SetDelete(bool del) { _delete = del; }
+
+        virtual bool IsInside(int x, int y) = 0;
+
+        /*
+        * Update the properties (voltage, current e etc.) of the component.
+        */
+        virtual void UpdateProperties(Matrix&) = 0;
+
+        /*
+        * Method call when the mouse is over the component.
+        */
         virtual void MouseOverEvent(int, int) = 0;
+        
+        /*
+        * Method call when a mouse click occour.
+        */
         virtual void MouseClickEvent(int, int, int, int) = 0;
+
+        /* Destructor */
         virtual ~Component(){};
 
+        /*
+        * Given the matricial equation Mx = b. This method fill the values in the matrices M and b, where
+        * 'row' is the current row to be filled, 'next_free_row' is the next row where a adicional equation, must be set
+        * and 'curr_col' is the next column in  the row 'row' to be filled with a current attribute.
+        */
         virtual void SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, int& curr_col) = 0;
+        
+        /*
+        * Returns the array of nodes of the component.
+        */
         vector<Node*> CheckNodes() { return _nodes; }
     };
 

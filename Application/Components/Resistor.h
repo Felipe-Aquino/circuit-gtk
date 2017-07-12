@@ -18,9 +18,11 @@ public:
     Resistor();
     void Draw(const Cairo::RefPtr<Cairo::Context>& cr);
     bool IsReady();
+    void UpdateProperties(Matrix&);
     void MouseOverEvent(int, int);
     void MouseClickEvent(int, int, int, int);
     void SetEquation(Matrix&, Matrix&, int, int&, int&);
+    bool IsInside(int, int);
     ~Resistor();
 };
 

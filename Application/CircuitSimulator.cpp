@@ -1,7 +1,7 @@
 #include "CircuitSimulator.h"
 
 CircuitSimulator::CircuitSimulator(vector<Node*>& nodes, unsigned sourceNumber){
-    _b = _m = NULL;
+    _b = _m = _x = NULL;
     _simulation = NULL;
 
     _nodes = nodes;
@@ -43,9 +43,11 @@ void CircuitSimulator::Start(){
 
     _m->print();
     _b->print();
-    Matrix x(matrix_size, 1);
-    x = _m->luSolving(*_b);
-    x.print();
+    _x = new Matrix(matrix_size, 1);
+    *_x = _m->luSolving(*_b);  
+    
+    _x->print();
+    UpdateNodes();
 }
 
 void CircuitSimulator::End(){
@@ -56,20 +58,33 @@ void CircuitSimulator::Run(){
 
 }
 
-bool CircuitSimulator::Grounding(){
-    int lower_y = 1000;
-    int position = 0, i = 1;
+void CircuitSimulator::UpdateNodes(){
     for(auto n : _nodes){
-        if(i > 1) {
-            int y = n->dimension.getY();
-            if(y < lower_y){
-                lower_y = y;
+        auto info = n->info;
+        info->voltage = _x->get(info->number, 0);
+    }
+}
+
+void CircuitSimulator::UpdateComponents(vector<Component*> components){
+    for(auto c : components){
+        c->UpdateProperties(*_x);
+    }
+}
+
+bool CircuitSimulator::Grounding(){
+    float greater_y = 0, y;
+    int position = 0, i = 0;
+    for(auto n : _nodes){
+        if(i > 0) {
+            y = n->dimension.getY();
+            if(y > greater_y){
+                greater_y = y;
                 position = i; 
             }
         }
         i++;
     }
-    cout << "ESSENTIAL NODES: " << i << " " << _essentialNodesNumber << endl;
+    cout << "ESSENTIAL NODES: " << i << " " << greater_y << endl;
     _nodes[0] = _nodes[position];
     _nodes.erase(_nodes.begin() + position);
     i = 0;

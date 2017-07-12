@@ -5,6 +5,8 @@ App::App(): canvas(){
     _background = Shapes::Rectangle(0, 0, windowWidth, windowHeight);
     srand(time(NULL));
     newComponent = NULL;
+    selectedComponent = NULL;
+    simulation = NULL;
 }
 
 App::~App(){
@@ -21,6 +23,7 @@ void App::startSimulation(){
     
     simulation = new CircuitSimulator(canvas.createdNodes, canvas.GetSourcesAndWiresNumber());
     simulation->Start();
+    canvas.UpdateCompSimulation(simulation);
     
 }
 
@@ -67,4 +70,22 @@ void App::keyPressed(unsigned char key, int x, int y){
         cout << "The key " << (int)key << " was pressed. " << endl;
         return;
     }
+}
+
+bool App::selectComponentEvent(int x, int y){
+    selectedComponent = canvas.FindComponent(x, y);
+    cout << "Selected: " << selectedComponent <<endl; 
+    return selectedComponent != NULL;
+}
+    
+void App::removeSelectedComponentEvent(){
+    canvas.RemoveComponent(selectedComponent);
+}
+
+void App::editSelectedComponentEvent(){
+
+}
+
+void App::deselectComponentEvent(){
+    selectedComponent = NULL;
 }

@@ -11,6 +11,8 @@
         App _app;
         class GtkGarbageActions;
 		GtkGarbageActions* _foolishActions;
+        Gtk::Menu *_popupMenu;
+
     public:
         GtkDraw();
         virtual ~GtkDraw();
@@ -23,6 +25,7 @@
 
         void connect_actions(Gtk::ApplicationWindow* w);
     private:
+        void setup_popup_menu();
         bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
         bool on_button_press_event(GdkEventButton* button_event) override;
         bool on_motion_notify_event(GdkEventMotion* motion_event) override;

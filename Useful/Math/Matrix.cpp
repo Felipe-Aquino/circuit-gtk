@@ -204,6 +204,15 @@ namespace Math {
         cout << endl;
     }
 
+    void Matrix::copy(Matrix& m){
+        if(_columns != m._columns || _rows != m._rows)
+            throw MatrixOperationException("The size of the matrices doesn't match!");
+
+        for(int i = 0; i < _rows; i++)
+            for(int j = 0; j < _columns; j++)
+                _matrix[i][j] = m._matrix[i][j];
+    }
+
     Matrix& Matrix::operator=(const Matrix &m){
         if(_columns != m._columns || _rows != m._rows)
             throw MatrixOperationException("The size of the matrices doesn't match!");

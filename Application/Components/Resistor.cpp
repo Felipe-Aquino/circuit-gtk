@@ -25,6 +25,12 @@ bool Resistor::IsReady(){
     return _ready;
 }
 
+void Resistor::UpdateProperties(Matrix& x){
+    _voltage = _nodes[0]->info->voltage - _nodes[1]->info->voltage; 
+    _current = _voltage/_resistance;
+    cout << "R - " << "V: " << _voltage << " I: " << _current << endl;
+}
+
 void Resistor::MouseOverEvent(int x, int y){
     if(_ready){
         //_menu.MouseOverEvent(x,y);
@@ -48,23 +54,12 @@ void Resistor::MouseClickEvent(int button, int state, int x, int y){
 
             y = r->getY() + r->getH();
             _nodes.push_back(new Node(x,y));
-        }
-    }
-    /*if(button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN){
-        if(_ready){
-            if(_shape.isInside(x, y)){
-                _drawMenu = true;
-                _menu.SetXY(x, y);
+            for(auto n : _nodes){
+                cout << "N: ";
+                n->dimension.print(); 
             }
         }
     }
-
-    if(state == GLUT_DOWN){
-        if(!_menu.MouseOverMenu(x, y) && _drawMenu){
-            _drawMenu = false;
-        } 
-    }
-    if(_drawMenu) _menu.MouseClickEvent(button, state, x, y);*/
 } 
 
 void Resistor::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, int& curr_col){
@@ -82,6 +77,7 @@ void Resistor::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, in
     }
 }
 
+bool Resistor::IsInside(int x, int y){ return _shape.isInside(x, y); }
 
 Resistor::~Resistor(){
 

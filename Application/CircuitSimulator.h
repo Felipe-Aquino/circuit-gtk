@@ -14,6 +14,7 @@
     class CircuitSimulator {
         Matrix *_m;
         Matrix *_b;
+        Matrix *_x;
         thread *_simulation;
         vector<Node*> _nodes;
 
@@ -25,10 +26,13 @@
 
         void Start();
         void End();
+
+        void UpdateComponents(vector<Component*> components);
         ~CircuitSimulator();
     private:
         static void Run();
 
+        void UpdateNodes();
         /* 
         * Find lowest node and place it as the first on the vector _nodes
         */

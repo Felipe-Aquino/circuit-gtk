@@ -1,0 +1,18 @@
+<interface>
+    <menu id='component-popup'>
+      <section>
+        <item>
+          <attribute name='label' translatable='yes'>edit</attribute>
+          <attribute name='action'>win.edit_component</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>move</attribute>
+          <attribute name='action'>win.move_component</attribute>
+        </item>
+        <item>
+          <attribute name='label' translatable='yes'>remove</attribute>
+          <attribute name='action'>win.remove_component</attribute>
+        </item>
+      </section>
+    </menu>
+</interface>

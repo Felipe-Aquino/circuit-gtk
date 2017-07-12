@@ -8,7 +8,7 @@
 
 	class GtkCoreApp : public Gtk::Application {
 		Glib::RefPtr<Gtk::Builder> _builder;
-
+		
 	public:
 		static Glib::RefPtr<GtkCoreApp> create();
 
@@ -20,6 +20,8 @@
 		void on_activate() override;
 
 	private:
+		void setup_popup_menu();
+
 		void create_window();
 
 		void on_window_hide(Gtk::Window* window);

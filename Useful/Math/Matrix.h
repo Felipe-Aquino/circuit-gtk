@@ -94,6 +94,11 @@ namespace Math {
         */
         void print();
 
+        /*
+        * Copy the matrix.
+        */
+        void copy(Matrix& m);
+
         /* Overloading some operations. */
 
         Matrix& operator=(const Matrix &m);

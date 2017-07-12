@@ -4,6 +4,7 @@
     #include <iostream>
     #include <vector>
     #include "Component.h"
+    #include "CircuitSimulator.h"
 
     class Canvas {
         Shapes::Rectangle _dimensions;
@@ -19,6 +20,7 @@
         void AddComponent(Component*);
         void RemoveComponent(Component*);
         void RemoveComponent(int);
+        Component* FindComponent(int, int);
         int GetComponentsNumber();
         int GetSourcesAndWiresNumber();
         void Draw(const Cairo::RefPtr<Cairo::Context>& cr);
@@ -30,6 +32,7 @@
         void Disconnect(Component*);
         ~Canvas();
     
+        void UpdateCompSimulation(CircuitSimulator*);
     private:
         void DrawGrid(const Cairo::RefPtr<Cairo::Context>& cr);
     };
