@@ -1,6 +1,6 @@
 #include "Capacitor.h"
 
-Capacitor::Capacitor():Component(){
+Capacitor::Capacitor(int x, int y):Component(){
     _id = CompID::CAPACITOR;
     _ready = false;
     _delete = false;
@@ -8,7 +8,7 @@ Capacitor::Capacitor():Component(){
     _capacitance = 0.001; 
     try{
         _shape.readFromSvg("./SVGs/capacitor.svg");
-        _shape.setXY(150, 150);
+        _shape.setXY(x, y);
     } catch(exception& e){
         cout << "Exception: " << e.what() << endl;
         exit(1);
@@ -32,10 +32,7 @@ void Capacitor::UpdateProperties(Matrix& x){
 }
 
 void Capacitor::MouseOverEvent(int x, int y){
-    if(_ready){
-        //_menu.MouseOverEvent(x,y);
-    }
-    else {
+    if(!_ready){
         _shape.setXY(x, y);
     }
 }
@@ -63,16 +60,16 @@ void Capacitor::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, i
     float bvalue = b.get(row, 0);
 
     _voltage0 = _voltage;
-    float dv = (_dt*_current/_capacitance) + _voltage0;
+    //float dv = (_dt*_current/_capacitance);
 
     if(_nodes[1]->info->isReference){
-        m.set(row, _nodes[1]->info->number, 1.0 + v);
-        m.set(row, _nodes[0]->info->number, -1.0 + v);
-        b.set(row, 0, dv + bvalue);
+        m.set(row, _nodes[1]->info->number, _capacitance/_dt + v);
+        m.set(row, _nodes[0]->info->number, -_capacitance/_dt + v);
+        b.set(row, 0, _current + bvalue);
     } else {
-        m.set(row, _nodes[1]->info->number, -1.0 + v);
-        m.set(row, _nodes[0]->info->number, 1.0 + v);
-        b.set(row, 0, -dv + bvalue);
+        m.set(row, _nodes[1]->info->number, -_capacitance/_dt + v);
+        m.set(row, _nodes[0]->info->number, _capacitance/_dt + v);
+        b.set(row, 0, -_current + bvalue);
     }
 }
 

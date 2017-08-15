@@ -1,11 +1,14 @@
 #include "GtkDraw.h"
+#include "EditWindow.h"
 
 class GtkDraw::GtkGarbageActions {
 	App* _app;
+	GtkDraw* _draw;
 
 public:
-	GtkGarbageActions(App* a){
+	GtkGarbageActions(App* a, GtkDraw* g){
 		_app = a;
+		_draw = g;
 	}
 
 	void connect_actions(Gtk::ApplicationWindow* w){
@@ -35,17 +38,21 @@ public:
 
 	void edit_component(){
 		_app->editSelectedComponentEvent();
+		EditWindow* w = EditWindow::create();
+		if(w) w->show();
 	}
 
 	void remove_component(){
 		_app->removeSelectedComponentEvent();
+		_draw->force_redraw();
 	}
 };
 
 GtkDraw::GtkDraw(): _app() {
+	_mouseX = _mouseY = 0;
 	set_size_request(500, 500);
 	
-	_foolishActions = new GtkGarbageActions(&_app);
+	_foolishActions = new GtkGarbageActions(&_app, this);
 	
 	/* Adding events */
 	add_events(Gdk::BUTTON_PRESS_MASK);
@@ -104,12 +111,14 @@ bool GtkDraw::on_button_press_event(GdkEventButton* button_event)  {
 bool GtkDraw::on_motion_notify_event(GdkEventMotion* motion_event)  {
 	Gtk::DrawingArea::on_motion_notify_event(motion_event);
 	
+	_mouseX = motion_event->x;
+	_mouseY = motion_event->y;
 	_app.mouseMove(motion_event->x, motion_event->y);
 	force_redraw();
 }
 
 bool GtkDraw::key_press_event(GdkEventKey* event) {
-	_app.keyPressed(event->keyval, 0, 0);
+	_app.keyPressed(event->keyval, _mouseX, _mouseY);
 	force_redraw();
 }
 

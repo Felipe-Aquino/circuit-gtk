@@ -22,8 +22,12 @@ void App::startSimulation(){
     if(simulation){ delete simulation; }
     
     simulation = new CircuitSimulator(canvas.createdNodes, canvas.GetSourcesAndWiresNumber());
+    canvas.LinkCompSimulation(simulation);
     simulation->Start();
-    canvas.UpdateCompSimulation(simulation);
+
+    for(int it = 0; it < 2; it++){
+        simulation->Run();
+    }
     
 }
 
@@ -55,12 +59,16 @@ void App::keyPressed(unsigned char key, int x, int y){
         newComponent = new Wire();
         canvas.AddComponent(newComponent);
         break;
+    case 'c':
+        newComponent = new Capacitor(x, y);
+        canvas.AddComponent(newComponent);
+        break;
     case 'r':
-        newComponent = new Resistor();
+        newComponent = new Resistor(x, y);
         canvas.AddComponent(newComponent);
         break;
     case 'v':
-        newComponent = new IndepVSource();
+        newComponent = new IndepVSource(x, y);
         canvas.AddComponent(newComponent);
         break;
     case 'g':

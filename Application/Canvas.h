@@ -32,7 +32,7 @@
         void Disconnect(Component*);
         ~Canvas();
     
-        void UpdateCompSimulation(CircuitSimulator*);
+        void LinkCompSimulation(CircuitSimulator*);
     private:
         void DrawGrid(const Cairo::RefPtr<Cairo::Context>& cr);
     };

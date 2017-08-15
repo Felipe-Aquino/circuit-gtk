@@ -1,6 +1,6 @@
 #include "Resistor.h"
 
-Resistor::Resistor(){
+Resistor::Resistor(int x, int y){
     _id = CompID::RESISTOR;
     _ready = false;
     _delete = false;
@@ -8,7 +8,7 @@ Resistor::Resistor(){
     _resistance = 100.0; 
     try{
         _shape.readFromSvg("./SVGs/resistor.svg");
-        _shape.setXY(150, 150);
+        _shape.setXY(x, y);
     } catch(exception& e){
         cout << "Exception: " << e.what() << endl;
         exit(1);
@@ -32,10 +32,7 @@ void Resistor::UpdateProperties(Matrix& x){
 }
 
 void Resistor::MouseOverEvent(int x, int y){
-    if(_ready){
-        //_menu.MouseOverEvent(x,y);
-    }
-    else {
+    if(!_ready){
         _shape.setXY(x, y);
     }
 }
@@ -49,13 +46,13 @@ void Resistor::MouseClickEvent(int button, int state, int x, int y){
             Shapes::Rectangle* r = dynamic_cast<Shapes::Rectangle*>(_shape.getContainerShape());
             int x = (int)(1.0*r->getX() + 0.5*r->getW() );
             int y = r->getY();
-            cout <<  x << " " << y << endl;
+            //cout <<  x << " " << y << endl;
             _nodes.push_back(new Node(x,y));
 
             y = r->getY() + r->getH();
             _nodes.push_back(new Node(x,y));
             for(auto n : _nodes){
-                cout << "N: ";
+           //     cout << "N: ";
                 n->dimension.print(); 
             }
         }

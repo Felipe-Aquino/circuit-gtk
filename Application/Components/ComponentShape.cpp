@@ -111,7 +111,7 @@ void ComponentShape::readFromSvg(std::string path){
         Shapes::Rectangle* r = new Shapes::Rectangle();
         _container->shape = r;
         readRectSVG(container, *r);
-        r->print();
+        //r->print();
     } 
     else 
     {
@@ -130,13 +130,13 @@ void ComponentShape::readFromSvg(std::string path){
         if(elemName == "circle"){
             Shapes::Circle* c = new Shapes::Circle();
             readCircleSVG(elem, *c);
-            c->print();
+            //c->print();
             circs.push_back(c);
         }
         else if(elemName == "rect"){
             Shapes::Rectangle* r = new Shapes::Rectangle();
             readRectSVG(elem, *r);
-            r->print();
+            //r->print();
             rects.push_back(r);
         }
     }

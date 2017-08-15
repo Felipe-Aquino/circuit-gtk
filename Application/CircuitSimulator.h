@@ -17,6 +17,7 @@
         Matrix *_x;
         thread *_simulation;
         vector<Node*> _nodes;
+        vector<Component*> _components;
 
         unsigned _sourceNumber;
         unsigned _essentialNodesNumber;
@@ -27,10 +28,12 @@
         void Start();
         void End();
 
-        void UpdateComponents(vector<Component*> components);
+        void UpdateComponents();
+        void SetComponents(vector<Component*>& components);
         ~CircuitSimulator();
+        void Run();
     private:
-        static void Run();
+        
 
         void UpdateNodes();
         /* 

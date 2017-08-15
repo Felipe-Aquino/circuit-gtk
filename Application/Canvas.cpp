@@ -138,8 +138,8 @@ void Canvas::Disconnect(Component* c){
     } 
 }
 
-void Canvas::UpdateCompSimulation(CircuitSimulator* s){
-    s->UpdateComponents(_components);
+void Canvas::LinkCompSimulation(CircuitSimulator* s){
+    s->SetComponents(_components);
 }
 
 

@@ -1,6 +1,6 @@
 #include "IndepVSource.h"
 
-IndepVSource::IndepVSource(){
+IndepVSource::IndepVSource(int x, int y){
     _id = CompID::INDEP_V_SOURCE;
     _ready = false;
     _delete = false;
@@ -10,6 +10,7 @@ IndepVSource::IndepVSource(){
     _flow = 1.0;
     try{
         _shape.readFromSvg("./SVGs/independent_v_source.svg");
+        _shape.setXY(x, y);
     } catch(exception& e){
         cout << "Exception: " << e.what() << endl;
         exit(1);
@@ -30,13 +31,11 @@ bool IndepVSource::IsReady(){
 void IndepVSource::UpdateProperties(Matrix& x){
     _current = _flow*x.get(_current_col, 0); // _flow sets the right direction of the current
     cout << "S - " << "V: " << _voltage << " I: " << _current << endl;
+    _checked = false;
 }
 
 void IndepVSource::MouseOverEvent(int x, int y){
-    if(_ready){
-        //_menu.MouseOverEvent(x,y);
-    }
-    else {
+    if(!_ready){
         _shape.setXY(x, y);
     }
 }

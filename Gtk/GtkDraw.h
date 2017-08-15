@@ -12,6 +12,7 @@
         class GtkGarbageActions;
 		GtkGarbageActions* _foolishActions;
         Gtk::Menu *_popupMenu;
+        int _mouseX, _mouseY;
 
     public:
         GtkDraw();

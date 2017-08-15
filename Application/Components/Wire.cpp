@@ -30,6 +30,7 @@ bool Wire::IsReady() { return _secondClick; }
 void Wire::UpdateProperties(Matrix& x){
     _current = _flow*x.get(_current_col, 0);  // _flow sets the right direction of the current
     cout << "W - " << "V: " << _voltage << " I: " << _current << endl;
+    _checked = false;
 }
 
 void Wire::MouseOverEvent(int x, int y){

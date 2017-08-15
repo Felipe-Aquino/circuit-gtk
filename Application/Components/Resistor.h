@@ -15,7 +15,7 @@ class Resistor : public Component {
 
     float _resistance;
 public:
-    Resistor();
+    Resistor(int, int);
     void Draw(const Cairo::RefPtr<Cairo::Context>& cr);
     bool IsReady();
     void UpdateProperties(Matrix&);

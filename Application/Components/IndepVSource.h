@@ -17,7 +17,7 @@ class IndepVSource : public Component {
     int _current_col;
     float _flow;
 public:
-    IndepVSource();
+    IndepVSource(int, int);
     void Draw(const Cairo::RefPtr<Cairo::Context>& cr);
     bool IsReady();
     void UpdateProperties(Matrix&);

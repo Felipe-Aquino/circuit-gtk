@@ -1,5 +1,7 @@
 #include "CircuitSimulator.h"
 
+#define DELETE(x) delete x; x = NULL;
+
 CircuitSimulator::CircuitSimulator(vector<Node*>& nodes, unsigned sourceNumber){
     _b = _m = _x = NULL;
     _simulation = NULL;
@@ -15,7 +17,7 @@ void CircuitSimulator::Start(){
     bool ok = Grounding();
     if(!ok) { cout << "OPEN CIRCUIT!!" << endl; return;}
 
-    int matrix_size = _nodes.size() + _sourceNumber;
+    /*int matrix_size = _nodes.size() + _sourceNumber;
 
     _m = new Matrix(matrix_size);
     _b = new Matrix(matrix_size, 1);
@@ -48,6 +50,10 @@ void CircuitSimulator::Start(){
     
     _x->print();
     UpdateNodes();
+    UpdateComponents();*/
+    //DELETE(_x);
+    //DELETE(_b);
+    //DELETE(_m);
 }
 
 void CircuitSimulator::End(){
@@ -55,7 +61,44 @@ void CircuitSimulator::End(){
 }
 
 void CircuitSimulator::Run(){
+    int matrix_size = _nodes.size() + _sourceNumber;
 
+    _m = new Matrix(matrix_size);
+    _b = new Matrix(matrix_size, 1);
+
+    int row = 1;
+    int next_free_row = 2;
+    int curr = _nodes.size();
+    int i = 0;
+
+    _m->set(0, 0, 1);
+    cout << "Nodes: " << curr  << endl;
+    cout << "SIZE: " << matrix_size << endl;
+    for(auto n : _nodes){
+        if((i++)){
+            n->info->isReference = true;
+
+            for(auto comp : n->getComponents()){
+                comp->SetEquation(*_m, *_b, row, next_free_row, curr);
+            }        
+
+            row = next_free_row++;
+            n->info->isReference = false;
+        }
+    }
+
+    _m->print();
+    _b->print();
+    _x = new Matrix(matrix_size, 1);
+    *_x = _m->luSolving(*_b);  
+    
+    _x->print();
+    UpdateNodes();
+    UpdateComponents();
+
+    DELETE(_x);
+    DELETE(_b);
+    DELETE(_m);
 }
 
 void CircuitSimulator::UpdateNodes(){
@@ -65,8 +108,8 @@ void CircuitSimulator::UpdateNodes(){
     }
 }
 
-void CircuitSimulator::UpdateComponents(vector<Component*> components){
-    for(auto c : components){
+void CircuitSimulator::UpdateComponents(){
+    for(auto c : _components){
         c->UpdateProperties(*_x);
     }
 }
@@ -95,7 +138,11 @@ bool CircuitSimulator::Grounding(){
     return true;
 }
 
+void CircuitSimulator::SetComponents(vector<Component*>& components){
+    _components = components;
+}
+
 CircuitSimulator::~CircuitSimulator(){
-    delete _m;
-    delete _b;
+    if(_m) delete _m;
+    if(_b) delete _b;
 }

@@ -16,7 +16,7 @@ class Capacitor : public Component {
     float _capacitance;
     float _voltage0;
 public:
-    Capacitor();
+    Capacitor(int, int);
     void Draw(const Cairo::RefPtr<Cairo::Context>& cr);
     bool IsReady();
     void UpdateProperties(Matrix&);
