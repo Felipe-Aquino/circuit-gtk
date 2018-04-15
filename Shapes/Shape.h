@@ -1,23 +1,23 @@
 #ifndef __SHAPE_H_
 #define __SHAPE_H_
 
+#include <gtkmm/drawingarea.h>
 #include <iostream>
 #include "../Useful/Color.h"
 
 using namespace std;
-using namespace Color;
 
 namespace Shapes {
-    typedef enum class shapeType {
+    enum class ShapeType {
         CIRCLE, RECTANGLE
-    } ShapeType;
+    };
 
     class Shape {
     protected:
         float _x;
         float _y;
-        
-        TColor _color;
+
+        Color _color;
         ShapeType _type;
     public:
         float getX() { return _x; }
@@ -25,8 +25,9 @@ namespace Shapes {
         void  setX(float x) { _x = x; }
         void  setY(float y) { _y = y; }
 
-        void setColor(TColor color) { _color = color; }
-        TColor getColor()  { return _color; }
+        void color(string c) { Color aux(c); _color = aux; }
+
+        Color color() { return _color; }
         ShapeType getID() { return _type; }
 
         virtual bool isInside(float x, float y) = 0;
@@ -35,7 +36,6 @@ namespace Shapes {
 
         virtual ~Shape(){}
     };
-
 }
 
 #endif

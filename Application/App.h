@@ -7,7 +7,6 @@
 #include <time.h>
 #include "../Shapes/Circle.h"
 #include "../Shapes/Rectangle.h"
-#include "../Useful/LinkedList.h"
 #include "CircuitSimulator.h"
 #include "Canvas.h"
 #include "Components/Components.h"
@@ -51,7 +50,7 @@ public:
 
     bool selectComponentEvent(int x, int y);
     void removeSelectedComponentEvent();
-    void editSelectedComponentEvent();
+    CompInfo& editSelectedComponentEvent();
     void deselectComponentEvent();
 };
 

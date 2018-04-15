@@ -1,34 +1,33 @@
 #ifndef __GTK_CORE_APPH_
 #define __GTK_CORE_APPH_
 
-	#include <gtkmm/application.h>
-	#include <gtkmm/builder.h>
-	#include <glibmm.h>
+#include <gtkmm/application.h>
+#include <gtkmm/builder.h>
+#include <glibmm.h>
 
 
-	class GtkCoreApp : public Gtk::Application {
-		Glib::RefPtr<Gtk::Builder> _builder;
-		
-	public:
-		static Glib::RefPtr<GtkCoreApp> create();
+class GtkCoreApp : public Gtk::Application {
+    Glib::RefPtr<Gtk::Builder> _builder;
 
-	protected:
-		GtkCoreApp();
+public:
+    static Glib::RefPtr<GtkCoreApp> create();
 
-		//Overrides of default signal handlers:
-		void on_startup() override;
-		void on_activate() override;
+protected:
+    GtkCoreApp();
 
-	private:
-		void setup_popup_menu();
+    //Overrides of default signal handlers:
+    void on_startup() override;
+    void on_activate() override;
 
-		void create_window();
+private:
+    void setup_popup_menu();
 
-		void on_window_hide(Gtk::Window* window);
-		void on_menu_file_new_generic();
-		void on_menu_file_quit();
-		void on_menu_help_about();
+    void create_window();
 
-	};
+    void on_window_hide(Gtk::Window* window);
+    void on_menu_file_new_generic();
+    void on_menu_file_quit();
+    void on_menu_help_about();
+};
 
 #endif

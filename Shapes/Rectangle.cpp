@@ -2,17 +2,15 @@
 
 namespace Shapes {
 
-    Rectangle::Rectangle() : _w(0), _h(0) {
-        _color = BLACK;
+    Rectangle::Rectangle(): _w(0), _h(0) {
         _x = 0;
         _y = 0;
 
         _type = ShapeType::RECTANGLE;
     }
 
-    Rectangle::Rectangle(float x, float y, float w, float h) : _w(w), _h(h) {
-        _color = BLACK;
-        _x = x;  
+    Rectangle::Rectangle(float x, float y, float w, float h): _w(w), _h(h) {
+        _x = x;
         _y = y;
 
         _type = ShapeType::RECTANGLE;
@@ -28,7 +26,7 @@ namespace Shapes {
     }
 
     void Rectangle::draw(const Cairo::RefPtr<Cairo::Context>& cr) {
-        Color::setColor(cr, _color);
+        cr->set_source_rgb(_color.r(), _color.g(), _color.b());
         cr->rectangle(_x, _y, _w, _h);
         cr->fill();
     }

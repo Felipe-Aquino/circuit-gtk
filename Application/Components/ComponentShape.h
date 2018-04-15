@@ -14,9 +14,8 @@ using namespace std;
 class ComponentShape {
     class Container;
 
-    Container* _container;
-    std::vector<Shapes::Rectangle*> rects;
-    std::vector<Shapes::Circle*> circs;
+    Shapes::Shape* _container;
+    vector<Shapes::Shape*> shapes;
 
 public:
     ComponentShape();
@@ -25,15 +24,9 @@ public:
     void setXY(float x, float y);
     Shapes::Shape* getContainerShape();
     void readFromSvg(std::string path);
-    void readRectSVG(TiXmlElement* element, Shapes::Rectangle& rect);
-    void readCircleSVG(TiXmlElement* element, Shapes::Circle& circ);
+    Shapes::Rectangle* readRectSVG(TiXmlElement* element);
+    Shapes::Circle* readCircleSVG(TiXmlElement* element);
     ~ComponentShape();
-    
-private:
-    const char* attr;
-    string msg;
-    const string& miss_msg(string attr, string tag);
-    void readAttriute(TiXmlElement* element, const char* attrname, const char* type = "rect");
 };
 
 #endif

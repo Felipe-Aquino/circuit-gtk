@@ -12,12 +12,12 @@ Wire::Wire(): p0(), p1() {
 void Wire::Draw(const Cairo::RefPtr<Cairo::Context>& cr){
     if(_firstClick) {
         cr->set_line_width(2.0);
-        Color::setColor(cr, TColor::BLACK);
-        
+        cr->set_source_rgb(0.0, 0.0, 0.0);
+
         cr->move_to(p0.x, p0.y);
         cr->line_to(p1.x, p1.y);
         cr->stroke();
-        
+
         for(auto n : _nodes){
             n->Draw(cr);
         }
@@ -83,14 +83,14 @@ void Wire::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, int& c
         b.set(next_free_row, 0, _voltage);
 
         _flow = _nodes[1]->info->isReference ? -1.0 : 1.0;
-        
+
         next_free_row++;
     } else {
         cout << "2W N0: " << _nodes[0]->info->number << endl;
         cout << "2W N1: " << _nodes[1]->info->number << endl;
         m.set(row, _current_col, -1);
     }
-    
+
     _checked = true;
 }
 

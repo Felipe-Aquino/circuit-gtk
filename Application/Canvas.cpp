@@ -2,7 +2,7 @@
 #include "../Useful/RemoveTemplate.h"
 
 Canvas::Canvas(int x, int y): _dimensions(0,0,x,y) {
-    _dimensions.setColor(Color::WHITE);
+    _dimensions.color("#FFFFFF");
     _spacing = 10.0;
     _showGrid = true;
 
@@ -46,7 +46,7 @@ int Canvas::GetComponentsNumber(){
 int Canvas::GetSourcesAndWiresNumber(){
     int n = 0;
     for(auto c : _components){
-        CompID id = c->GetID(); 
+        CompID id = c->GetID();
         if(id == CompID::WIRE || id == CompID::INDEP_V_SOURCE ) n++;
     }
     return n;
@@ -64,7 +64,7 @@ void Canvas::Draw(const Cairo::RefPtr<Cairo::Context>& cr) {
         if(c->ToDelete())
             a = c;
     }
-    if(a) RemoveComponent(a); 
+    if(a) RemoveComponent(a);
 }
 
 void Canvas::DrawGrid(const Cairo::RefPtr<Cairo::Context>& cr){
@@ -72,7 +72,7 @@ void Canvas::DrawGrid(const Cairo::RefPtr<Cairo::Context>& cr){
     if(_showGrid)
         for(int i = 0; i < 50; i++){
 
-            Color::setColor(cr, TColor::SILVER);
+            cr->set_source_rgb(0.6, 0.6, 0.6);
             cr->move_to(i*_spacing, 0);
             cr->line_to(i*_spacing, 500);
 
@@ -115,8 +115,8 @@ void Canvas::Connect(Component* c){
             node->info = _canvasNodes[i][j]->info;
         }
         _canvasNodes[i][j]->ConnectComponent(c);
-        cout << "Adding component in the node [" << i << "," << j << "]" <<endl; 
-    } 
+        cout << "Adding component in the node [" << i << "," << j << "]" <<endl;
+    }
 }
 
 void Canvas::Disconnect(Component* c){
@@ -128,14 +128,14 @@ void Canvas::Disconnect(Component* c){
             _canvasNodes[i][j]->DisconnectComponent(c);
             if(!_canvasNodes[i][j]->HasComponent()){
                 Remove(createdNodes, _canvasNodes[i][j]);
-                delete _canvasNodes[i][j]; 
+                delete _canvasNodes[i][j];
                 _canvasNodes[i][j] = NULL;
                 cout << "Removing node" << endl;
             }
-        } 
+        }
         cout << "Remove component in the node [" << i << "," << j << "]" <<endl;
         cout << "Created nodes number: " << createdNodes.size() <<endl;
-    } 
+    }
 }
 
 void Canvas::LinkCompSimulation(CircuitSimulator* s){

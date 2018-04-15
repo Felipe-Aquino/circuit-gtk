@@ -1,4 +1,6 @@
 #include "App.h"
+#include "CompInfo.h"
+#include "../Useful/report.h"
 
 App::App(): canvas(){
     windowHeight = windowWidth = 500;
@@ -20,7 +22,7 @@ void App::display(const Cairo::RefPtr<Cairo::Context>& cr){
 
 void App::startSimulation(){
     if(simulation){ delete simulation; }
-    
+
     simulation = new CircuitSimulator(canvas.createdNodes, canvas.GetSourcesAndWiresNumber());
     canvas.LinkCompSimulation(simulation);
     simulation->Start();
@@ -28,7 +30,6 @@ void App::startSimulation(){
     for(int it = 0; it < 2; it++){
         simulation->Run();
     }
-    
 }
 
 void App::mouseClick(int button, int state,int x, int y){
@@ -75,23 +76,23 @@ void App::keyPressed(unsigned char key, int x, int y){
         canvas.ToggleGrid();
         break;
     default:
-        cout << "The key " << (int)key << " was pressed. " << endl;
+        report::report(report::format("The key % was pressed.", key));
         return;
     }
 }
 
 bool App::selectComponentEvent(int x, int y){
     selectedComponent = canvas.FindComponent(x, y);
-    cout << "Selected: " << selectedComponent <<endl; 
+    cout << "Selected: " << selectedComponent <<endl;
     return selectedComponent != NULL;
 }
-    
+
 void App::removeSelectedComponentEvent(){
     canvas.RemoveComponent(selectedComponent);
 }
 
-void App::editSelectedComponentEvent(){
-
+CompInfo& App::editSelectedComponentEvent(){
+    return selectedComponent->info;
 }
 
 void App::deselectComponentEvent(){

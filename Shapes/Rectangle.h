@@ -1,34 +1,34 @@
 #ifndef __RECTANGLE_H_
 #define __RECTANGLE_H_
 
-    #include <string>
-    #include "Shape.h"
+#include <string>
+#include "Shape.h"
 
-    using namespace std;
+using namespace std;
 
-    namespace Shapes {
-        class Rectangle : public Shape {
-            float _w;
-            float _h;
+namespace Shapes {
+    class Rectangle : public Shape {
+        float _w;
+        float _h;
 
-        public:
+    public:
 
-            Rectangle();
-            Rectangle(Rectangle &);
-            Rectangle(float, float, float, float);
-            void draw(const Cairo::RefPtr<Cairo::Context>& cr);
+        Rectangle();
+        Rectangle(Rectangle &);
+        Rectangle(float, float, float, float);
+        void draw(const Cairo::RefPtr<Cairo::Context>& cr);
 
-            void print();
-            bool isInside(float x, float y);
+        void print();
+        bool isInside(float x, float y);
 
-            void setW(float);
-            void setH(float);
+        void setW(float);
+        void setH(float);
 
-            float getW();
-            float getH();
+        float getW();
+        float getH();
 
-            ~Rectangle();
-        };
-    }
+        ~Rectangle();
+    };
+}
 
 #endif

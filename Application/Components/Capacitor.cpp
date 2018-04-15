@@ -5,7 +5,7 @@ Capacitor::Capacitor(int x, int y):Component(){
     _ready = false;
     _delete = false;
     _drawMenu = false;
-    _capacitance = 0.001; 
+    _capacitance = 0.001;
     try{
         _shape.readFromSvg("./SVGs/capacitor.svg");
         _shape.setXY(x, y);
@@ -27,7 +27,7 @@ bool Capacitor::IsReady(){
 }
 
 void Capacitor::UpdateProperties(Matrix& x){
-    _voltage = _nodes[0]->info->voltage - _nodes[1]->info->voltage; 
+    _voltage = _nodes[0]->info->voltage - _nodes[1]->info->voltage;
     _current = _capacitance*(_voltage -_voltage0)/_dt;
 }
 
@@ -42,7 +42,7 @@ void Capacitor::MouseClickEvent(int button, int state, int x, int y){
         if(!_ready){
             _ready = true;
             _shape.setXY(x, y);
-            
+
             Shapes::Rectangle* r = dynamic_cast<Shapes::Rectangle*>(_shape.getContainerShape());
             int x = (int)(1.0*r->getX() + 0.5*r->getW() );
             int y = r->getY();
@@ -53,7 +53,7 @@ void Capacitor::MouseClickEvent(int button, int state, int x, int y){
             _nodes.push_back(new Node(x,y));
         }
     }
-} 
+}
 
 void Capacitor::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, int& curr_col){
     float v = m.get(row, _nodes[1]->info->number);

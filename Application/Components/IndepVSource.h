@@ -9,7 +9,7 @@ using namespace Math;
 
 class IndepVSource : public Component {
     ComponentShape _shape;
-    bool _ready;    
+    bool _ready;
     bool _delete;
     bool _drawMenu;
 
@@ -25,6 +25,7 @@ public:
     void MouseClickEvent(int, int, int, int);
     void SetEquation(Matrix&, Matrix&, int, int&, int&);
     bool IsInside(int, int);
+    void PropertyChanged(void);
     ~IndepVSource();
 };
 

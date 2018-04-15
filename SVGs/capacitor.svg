@@ -1,38 +1,39 @@
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-  <rect
-  x="231"
-  y="359"
-  width="20"
-  height="70"
-  fill="white">
 
-     <rect
-     x="230"
-     y="389"
-     width="20"
-     height="2"
-     fill="black" />
+    <rect
+    x="231"
+    y="359"
+    width="20"
+    height="70"
+    fill="#FFFFFF"
+    id="container" />
 
-     <rect
-     x="230"
-     y="399"
-     width="20"
-     height="2"
-     fill="black" />
+    <rect
+    x="230"
+    y="389"
+    width="20"
+    height="2"
+    fill="#000000" />
 
-     <rect
-     x="240"
-     y="359"
-     width="2"
-     height="30"
-     fill="black" />
+    <rect
+    x="230"
+    y="399"
+    width="20"
+    height="2"
+    fill="#000000" />
 
-     <rect
-     x="240"
-     y="399"
-     width="2"
-     height="30"
-     fill="black" />
+    <rect
+    x="240"
+    y="359"
+    width="2"
+    height="30"
+    fill="#000000" />
 
-  </rect>
+    <rect
+    x="240"
+    y="399"
+    width="2"
+    height="30"
+    fill="#000000" />
+
 </svg>

@@ -36,7 +36,7 @@ void CircuitSimulator::Start(){
 
         for(auto comp : n->getComponents()){
             comp->SetEquation(*_m, *_b, row, next_free_row, curr);
-        }        
+        }
 
         row = next_free_row++;
         n->info->isReference = false;
@@ -46,8 +46,8 @@ void CircuitSimulator::Start(){
     _m->print();
     _b->print();
     _x = new Matrix(matrix_size, 1);
-    *_x = _m->luSolving(*_b);  
-    
+    *_x = _m->luSolving(*_b);
+
     _x->print();
     UpdateNodes();
     UpdateComponents();*/
@@ -80,7 +80,7 @@ void CircuitSimulator::Run(){
 
             for(auto comp : n->getComponents()){
                 comp->SetEquation(*_m, *_b, row, next_free_row, curr);
-            }        
+            }
 
             row = next_free_row++;
             n->info->isReference = false;
@@ -90,8 +90,8 @@ void CircuitSimulator::Run(){
     _m->print();
     _b->print();
     _x = new Matrix(matrix_size, 1);
-    *_x = _m->luSolving(*_b);  
-    
+    *_x = _m->luSolving(*_b);
+
     _x->print();
     UpdateNodes();
     UpdateComponents();
@@ -122,7 +122,7 @@ bool CircuitSimulator::Grounding(){
             y = n->dimension.getY();
             if(y > greater_y){
                 greater_y = y;
-                position = i; 
+                position = i;
             }
         }
         i++;
@@ -131,7 +131,7 @@ bool CircuitSimulator::Grounding(){
     _nodes[0] = _nodes[position];
     _nodes.erase(_nodes.begin() + position);
     i = 0;
-    for(auto n : _nodes){ 
+    for(auto n : _nodes){
         n->info->number = i++;
         if(!n->IsEstable()) return false;
     }

@@ -1,18 +1,27 @@
 #include "Resistor.h"
+#include <functional>
+#include "../../Useful/report.h"
+
+using namespace Primitive;
 
 Resistor::Resistor(int x, int y){
     _id = CompID::RESISTOR;
     _ready = false;
     _delete = false;
     _drawMenu = false;
-    _resistance = 100.0; 
-    try{
+    _resistance = 100.0;
+    try {
         _shape.readFromSvg("./SVGs/resistor.svg");
         _shape.setXY(x, y);
     } catch(exception& e){
-        cout << "Exception: " << e.what() << endl;
+        report::exception(e.what());
         exit(1);
     }
+
+    info.name = "Resistor";
+    Property* property = new Property("resistance", FLOAT, new Float(_resistance));
+    property->onChange.connect_member(this, &Resistor::PropertyChanged);
+    info.properties.push_back(property);
 }
 
 void Resistor::Draw(const Cairo::RefPtr<Cairo::Context>& cr){
@@ -26,7 +35,7 @@ bool Resistor::IsReady(){
 }
 
 void Resistor::UpdateProperties(Matrix& x){
-    _voltage = _nodes[0]->info->voltage - _nodes[1]->info->voltage; 
+    _voltage = _nodes[0]->info->voltage - _nodes[1]->info->voltage;
     _current = _voltage/_resistance;
     cout << "R - " << "V: " << _voltage << " I: " << _current << endl;
 }
@@ -42,7 +51,7 @@ void Resistor::MouseClickEvent(int button, int state, int x, int y){
         if(!_ready){
             _ready = true;
             _shape.setXY(x, y);
-            
+
             Shapes::Rectangle* r = dynamic_cast<Shapes::Rectangle*>(_shape.getContainerShape());
             int x = (int)(1.0*r->getX() + 0.5*r->getW() );
             int y = r->getY();
@@ -53,11 +62,11 @@ void Resistor::MouseClickEvent(int button, int state, int x, int y){
             _nodes.push_back(new Node(x,y));
             for(auto n : _nodes){
            //     cout << "N: ";
-                n->dimension.print(); 
+                n->dimension.print();
             }
         }
     }
-} 
+}
 
 void Resistor::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, int& curr_col){
     float v = m.get(row, _nodes[1]->info->number);
@@ -75,6 +84,12 @@ void Resistor::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, in
 }
 
 bool Resistor::IsInside(int x, int y){ return _shape.isInside(x, y); }
+
+void Resistor::PropertyChanged(void){
+    cout << "Resistance changed from " << _resistance;
+    info.properties[0]->getValue()->load(_resistance);
+    cout << " to " << _resistance << endl;
+}
 
 Resistor::~Resistor(){
 

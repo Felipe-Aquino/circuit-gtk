@@ -1,25 +1,28 @@
 #ifndef __COLOR_H_
 #define __COLOR_H_
 
-#include <gtkmm/drawingarea.h>
 #include <iostream>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
-namespace Color{
+struct Color {
+    float rgb[4];
 
-    typedef enum {
-        WHITE, BLACK, GREEN, RED, BLUE, GREY, SILVER, YELLOW, LIME, AQUA, CIAN,
-        MARRON, BROWN, PURPLE, NAVY, FUCHSIA, PINK, OLIVE, TEAL
-    } TColor;
+    float r();
+    float g();
+    float b();
 
-    void setColor(const Cairo::RefPtr<Cairo::Context>& cr, TColor color);
-    void toRGBArray(TColor color, float rgb[3]);
-    void toRGBArrayLighter(TColor color, float rgb[3]);
-    void toRGBArrayDarker(TColor color, float rgb[3]);
-    TColor stringToTColor(string Color);
-    string TColorToString(TColor Color);
+    void set(float r, float g, float b);
+
+    Color();
+    Color(float r, float g, float b);
+    Color(Color& color);
+    Color(string color);
+    Color(const char* color);
+
+    friend ostream& operator<<(ostream& os, Color& color);
 };
 
 #endif

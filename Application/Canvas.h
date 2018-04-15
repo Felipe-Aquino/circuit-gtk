@@ -14,7 +14,7 @@
         bool _showGrid;
 
     public:
-        vector<Node*> createdNodes; 
+        vector<Node*> createdNodes;
 
         Canvas(int = 500, int = 500);
         void AddComponent(Component*);
@@ -27,11 +27,11 @@
         void MouseOverEvent(int, int);
         void MouseClickEvent(int, int, int, int);
         void ToggleGrid();
-        
+
         void Connect(Component*);
         void Disconnect(Component*);
         ~Canvas();
-    
+
         void LinkCompSimulation(CircuitSimulator*);
     private:
         void DrawGrid(const Cairo::RefPtr<Cairo::Context>& cr);
