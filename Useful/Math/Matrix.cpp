@@ -177,7 +177,6 @@ namespace Math {
 
         /* Solving Ux = y*/
         for(int i = _rows-1; i >= 0; i--){
-            cout << "i = " << i << endl;
             sum = 0;
             for(unsigned j = i+1; j < _rows; j++){
                 sum += x._matrix[j][0]*U._matrix[i][j];
