@@ -10,7 +10,7 @@ using namespace std;
 namespace Math {
     class Matrix {
         float** _matrix;
-        unsigned _columns, _rows; 
+        unsigned _columns, _rows;
         bool _square;
     public:
         /*
@@ -27,14 +27,11 @@ namespace Math {
         * Set the value of the element in position (row, col) of the matrix.
         */
         void set(unsigned row, unsigned col, float value);
-        
+
         /*
         * Get value in the position (row, col).
         */
         float get(unsigned row, unsigned col);
-
-        unsigned getRows() { return _rows; }
-        unsigned getColumns() { return _columns; }
 
         /*
         * Retrieve the number of columns of the matrix.
@@ -62,7 +59,7 @@ namespace Math {
         * It places the firt row where is the second one, and vice-versa.
         */
         void swapRows(unsigned row1, unsigned row2);
-        
+
         /*
         * Let M be a arbitrary matrix. This method will sum the row 'r1' and the row 'r2' of M, and put the result in the
         * row 'r1' of M.
@@ -70,12 +67,12 @@ namespace Math {
         void sumRows(unsigned r1, unsigned r2);
 
         /*
-        * Sum the matrix, wich called this method, with the matrix in the parameter and saves the result in the first matrix. 
+        * Sum the matrix, wich called this method, with the matrix in the parameter and saves the result in the first matrix.
         */
         void sumWith(Matrix &m);
 
         /*
-        * Subtract, from the matrix wich called this method, the matrix in the parameter and saves the result in the first matrix. 
+        * Subtract, from the matrix wich called this method, the matrix in the parameter and saves the result in the first matrix.
         */
         void subWith(Matrix &m);
 
@@ -85,7 +82,7 @@ namespace Math {
         void identity();
 
         /*
-        * Solving the Equation Ax = b, using the LU method. The matrix x is returned. 
+        * Solving the Equation Ax = b, using the LU method. The matrix x is returned.
         */
         Matrix luSolving(Matrix& b);
 

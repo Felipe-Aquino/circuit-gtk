@@ -44,10 +44,17 @@ namespace Math {
     }
 
     void Matrix::set(unsigned row, unsigned col, float value){
-        _matrix[row][col] = value;
+        if(row < _rows && col < _columns)
+            _matrix[row][col] = value;
+        else
+            cout << "Matrix: out of boundaries access!\n";
     }
 
     float Matrix::get(unsigned row, unsigned col){
+        if(row >= _rows || col >= _columns) {
+            cout << "Matrix: out of boundaries access!\n";
+            return 0;
+        }
         return _matrix[row][col];
     }
 
@@ -57,7 +64,7 @@ namespace Math {
 
     void Matrix::multiplyRow(unsigned row, float value){
         if(row >= _rows){
-            stringstream  msg;
+            stringstream msg;
             msg << "Trying access the row " << row << " in a matrix of size " << _rows << "x" <<_columns;
             throw MatrixOperationException(msg.str());
         }
@@ -69,7 +76,7 @@ namespace Math {
     void Matrix::swapRows(unsigned row1, unsigned row2){
         if(row1 >= _rows || row2 >= _rows){
             unsigned row = row1 >= _rows ? row1 : row2;
-            stringstream  msg;
+            stringstream msg;
             msg << "Trying access the row " << row << " in a matrix of size " << _rows << "x" <<_columns;
             throw MatrixOperationException(msg.str());
         }
@@ -85,7 +92,7 @@ namespace Math {
     void Matrix::sumRows(unsigned row1, unsigned row2){
         if(row1 >= _rows || row2 >= _rows){
             unsigned row = row1 >= _rows ? row1 : row2;
-            stringstream  msg;
+            stringstream msg;
             msg << "Trying access the row " << row << " in a matrix of size " << _rows << "x" <<_columns;
             throw MatrixOperationException(msg.str());
         }
@@ -169,7 +176,8 @@ namespace Math {
         }
 
         /* Solving Ux = y*/
-        for(unsigned i = _rows-1; i >= 0; i--){
+        for(int i = _rows-1; i >= 0; i--){
+            cout << "i = " << i << endl;
             sum = 0;
             for(unsigned j = i+1; j < _rows; j++){
                 sum += x._matrix[j][0]*U._matrix[i][j];
