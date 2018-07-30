@@ -4,25 +4,30 @@
 #include <iostream>
 #include <cmath>
 #include <cstring>
-#include <time.h>
 #include "../Shapes/Circle.h"
 #include "../Shapes/Rectangle.h"
 #include "CircuitSimulator.h"
-#include "Canvas.h"
 #include "Components/Components.h"
+
+typedef const Cairo::RefPtr<Cairo::Context> CairoContext;
 
 using namespace std;
 
 class App {
-    Canvas canvas;
-
     Component* newComponent;
     Component* selectedComponent;
 
     CircuitSimulator* simulation;
     Shapes::Rectangle _background;
+
+    vector<Component*> _components;
+    Node*** _gridNodes;
+    float _spacing;
+    bool _showGrid;
+
+    vector<Node*> createdNodes;
 public:
-    int windowHeight, windowWidth;
+    int height, width;
 
     App();
     ~App();
@@ -30,7 +35,7 @@ public:
     /*
     * Draw all elements of the application
     */
-    void display(const Cairo::RefPtr<Cairo::Context>& cr);
+    void display(CairoContext& cr);
 
     /*
     * Process the key pressed event
@@ -52,6 +57,17 @@ public:
     void removeSelectedComponentEvent();
     CompInfo& editSelectedComponentEvent();
     void deselectComponentEvent();
+
+ private:
+    void AddComponent(Component*);
+    void RemoveComponent(Component*);
+    Component* FindComponent(int, int);
+    int GetSourcesAndWiresNumber();
+
+    void Connect(Component*);
+    void Disconnect(Component*);
+
+    void DrawGrid(CairoContext& cr);
 };
 
 #endif

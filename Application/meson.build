@@ -7,9 +7,8 @@ lapp = shared_library(
     'Components/Wire.cpp',
     'Components/Resistor.cpp',
     'Components/Capacitor.cpp',
-    'Components/IndepVSource.cpp',
+    'Components/IVSource.cpp',
     'CircuitSimulator.cpp',
-    'Canvas.cpp',
     'App.cpp',
     link_with: [luseful, lshape],
     dependencies:[gtkmmdep, gtkdep]

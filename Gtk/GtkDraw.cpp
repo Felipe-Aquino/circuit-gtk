@@ -2,6 +2,7 @@
 #include "EditDialog.h"
 #include "../Application/CompInfo.h"
 #include "../Useful/report.h"
+#include "../Useful/fast_gui.h"
 
 class GtkDraw::GtkGarbageActions {
     App* _app;
@@ -59,12 +60,16 @@ GtkDraw::GtkDraw(): _app() {
 
     /* Adding events */
     add_events(Gdk::BUTTON_PRESS_MASK);
+    add_events(Gdk::BUTTON_RELEASE_MASK);
     add_events(Gdk::POINTER_MOTION_MASK);
 
     setup_popup_menu();
+
+    fst::pre_init();
 }
 
 GtkDraw::~GtkDraw(){
+    fst::end();
     delete _foolishActions;
     delete _popupMenu;
 }
@@ -78,8 +83,12 @@ void GtkDraw::force_redraw(){
 }
 
 bool GtkDraw::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)  {
+    fst::init(cr);
+
     _app.display(cr);
 
+
+    fst::render(cr);
     return true;
 }
 
@@ -89,6 +98,7 @@ void GtkDraw::on_new_component(){
 
 bool GtkDraw::on_button_press_event(GdkEventButton* button_event)  {
     Gtk::DrawingArea::on_button_press_event(button_event);
+    fst::mouse_press(button_event);
 
     _app.mouseClick(button_event->button, GDK_BUTTON_PRESS, button_event->x, button_event->y);
     force_redraw();
@@ -112,8 +122,16 @@ bool GtkDraw::on_button_press_event(GdkEventButton* button_event)  {
     return true;
 }
 
+bool GtkDraw::on_button_release_event(GdkEventButton* button_event)  {
+    Gtk::DrawingArea::on_button_press_event(button_event);
+    fst::mouse_release(button_event);
+
+    return true;
+}
+
 bool GtkDraw::on_motion_notify_event(GdkEventMotion* motion_event)  {
     Gtk::DrawingArea::on_motion_notify_event(motion_event);
+    fst::mouse_move(motion_event);
 
     _mouseX = motion_event->x;
     _mouseY = motion_event->y;
@@ -123,7 +141,9 @@ bool GtkDraw::on_motion_notify_event(GdkEventMotion* motion_event)  {
 }
 
 bool GtkDraw::key_press_event(GdkEventKey* event) {
-    _app.keyPressed(event->keyval, _mouseX, _mouseY);
+    bool debugging = fst::key_event(event);
+    if(!debugging)
+        _app.keyPressed(event->keyval, _mouseX, _mouseY);
     force_redraw();
     return true;
 }

@@ -4,7 +4,6 @@
 #include "../Shapes/Rectangle.h"
 #include "../Shapes/Circle.h"
 #include "../Useful/Math/Matrix.h"
-#include "../Useful/RemoveTemplate.h"
 #include "CompInfo.h"
 #include <vector>
 
@@ -12,19 +11,31 @@ using namespace std;
 using namespace Shapes;
 using namespace Math;
 
+template<class T>
+void Remove(vector<T*>& elements, T* element) {
+    int i = 0;
+    for(auto e: elements){
+        if(element == e) {
+            elements.erase(elements.begin() + i);
+            break;
+        }
+        i++;
+    }
+}
+
 class Node;
 
-typedef enum class compID {
-    WIRE, RESISTOR, CAPACITOR, INDEP_V_SOURCE
-} CompID;
+typedef enum class cid {
+    WIRE, RESISTOR, CAPACITOR, I_V_SOURCE
+} Cid; // Component id
 
 class Component {
 protected:
-    CompID _id;
+    Cid _id;
     vector<Node*> _nodes;
     bool _delete;
     float _voltage, _current;
-    float _dt;
+    float _dt = 0.01;
 
 public:
     CompInfo info;
@@ -34,7 +45,7 @@ public:
         _delete = false;
         _voltage = _current = 0.0;
         _dt = 0.01;
-    };
+    }
 
     Component(Component& c){
         _id = c._id;
@@ -50,7 +61,7 @@ public:
     /*
     * Returns the id of the component.
     */
-    CompID GetID(){ return _id; }
+    Cid GetID(){ return _id; }
     bool ToDelete() { return _delete; }
     void SetDelete(bool del) { _delete = del; }
 
@@ -85,12 +96,15 @@ public:
     * Returns the array of nodes of the component.
     */
     vector<Node*> CheckNodes() { return _nodes; }
+
+    float voltage() { return _voltage; }
+    float current() { return _current; }
 };
 
 class Node {
-    vector<Component*> _connectComps;
-
 public:
+    vector<Component*> _connectComps; // NOTE: Do not access directly
+
     class NodeInfo {
     public:
         bool isReference;
@@ -100,13 +114,10 @@ public:
     };
 
     Circle dimension;
-    int radius;
     NodeInfo* info;
 
-
-    Node(int x = 0, int y = 0): dimension(x,y,5), radius(5) { info = new NodeInfo(); }
+    Node(int x = 0, int y = 0): dimension(x, y, 5) { info = new NodeInfo(); }
     Node(Node* n): dimension(n->dimension){
-        radius = n->radius;
         info = n->info;
         //_connectComps = n->_connectComps;
     };
@@ -114,7 +125,7 @@ public:
     void Draw(const Cairo::RefPtr<Cairo::Context>& cr) { dimension.draw(cr); }
     void SetXY(int x, int y){ dimension.setX(x), dimension.setY(y); }
     vector<Component*> getComponents() { return _connectComps; }
-    void ConnectComponent(Component *c){ _connectComps.push_back(c); }
+    void ConnectComponent(Component* c){ _connectComps.push_back(c); }
     void DisconnectComponent(Component* c) { Remove(_connectComps, c); }
 
     bool HasComponent() { return _connectComps.size() > 0; }

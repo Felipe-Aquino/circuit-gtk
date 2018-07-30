@@ -4,14 +4,14 @@
 
 using namespace Primitive;
 
-Resistor::Resistor(int x, int y){
-    _id = CompID::RESISTOR;
+Resistor::Resistor(int x, int y) {
+    _id = Cid::RESISTOR;
     _ready = false;
     _delete = false;
     _drawMenu = false;
     _resistance = 100.0;
     try {
-        _shape.readFromSvg("./SVGs/resistor.svg");
+        _nodes = _shape.readFromSvg("./SVGs/resistor.svg");
         _shape.setXY(x, y);
     } catch(exception& e){
         report::exception(e.what());
@@ -19,56 +19,41 @@ Resistor::Resistor(int x, int y){
     }
 
     info.name = "Resistor";
-    Property* property = new Property("resistance", FLOAT, new Float(_resistance));
+    Property* property = new Property("resistance", new Float(_resistance));
     property->onChange.connect_member(this, &Resistor::PropertyChanged);
     info.properties.push_back(property);
 }
 
-void Resistor::Draw(const Cairo::RefPtr<Cairo::Context>& cr){
+void Resistor::Draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     _shape.draw(cr);
-
-    for(auto n : _nodes) n->Draw(cr);
 }
 
-bool Resistor::IsReady(){
+bool Resistor::IsReady() {
     return _ready;
 }
 
-void Resistor::UpdateProperties(Matrix& x){
+void Resistor::UpdateProperties(Matrix& x) {
     _voltage = _nodes[0]->info->voltage - _nodes[1]->info->voltage;
     _current = _voltage/_resistance;
     cout << "R - " << "V: " << _voltage << " I: " << _current << endl;
 }
 
-void Resistor::MouseOverEvent(int x, int y){
+void Resistor::MouseOverEvent(int x, int y) {
     if(!_ready){
         _shape.setXY(x, y);
     }
 }
 
-void Resistor::MouseClickEvent(int button, int state, int x, int y){
+void Resistor::MouseClickEvent(int button, int state, int x, int y) {
     if(button == 1 && state == GDK_BUTTON_PRESS){
         if(!_ready){
             _ready = true;
             _shape.setXY(x, y);
-
-            Shapes::Rectangle* r = dynamic_cast<Shapes::Rectangle*>(_shape.getContainerShape());
-            int x = (int)(1.0*r->getX() + 0.5*r->getW() );
-            int y = r->getY();
-            //cout <<  x << " " << y << endl;
-            _nodes.push_back(new Node(x,y));
-
-            y = r->getY() + r->getH();
-            _nodes.push_back(new Node(x,y));
-            for(auto n : _nodes){
-           //     cout << "N: ";
-                n->dimension.print();
-            }
         }
     }
 }
 
-void Resistor::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, int& curr_col){
+void Resistor::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, int& curr_col) {
     float v = m.get(row, _nodes[1]->info->number);
 
     cout << "R N0: " << _nodes[0]->info->number << endl;
@@ -83,14 +68,14 @@ void Resistor::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, in
     }
 }
 
-bool Resistor::IsInside(int x, int y){ return _shape.isInside(x, y); }
+bool Resistor::IsInside(int x, int y) { return _shape.isInside(x, y); }
 
-void Resistor::PropertyChanged(void){
+void Resistor::PropertyChanged(void) {
     cout << "Resistance changed from " << _resistance;
     info.properties[0]->getValue()->load(_resistance);
     cout << " to " << _resistance << endl;
 }
 
-Resistor::~Resistor(){
+Resistor::~Resistor() {
 
 }

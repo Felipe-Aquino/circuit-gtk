@@ -83,6 +83,6 @@ Color::Color(const char* color) {
 }
 
 ostream& operator<<(ostream& os, Color& color) {
-    os << "{r= " << color.r() << ", g= " << color.g() << ", b= " << color.b() << "}";
+    os << "{r: " << color.r() << ", g: " << color.g() << ", b: " << color.b() << "}";
     return os;
 }

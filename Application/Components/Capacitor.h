@@ -9,7 +9,7 @@ using namespace Math;
 
 class Capacitor : public Component {
     ComponentShape _shape;
-    bool _ready;    
+    bool _ready;
     bool _delete;
     bool _drawMenu;
 
@@ -23,6 +23,7 @@ public:
     void MouseOverEvent(int, int);
     void MouseClickEvent(int, int, int, int);
     void SetEquation(Matrix&, Matrix&, int, int&, int&);
+    void PropertyChanged(void);
     bool IsInside(int, int);
     ~Capacitor();
 };

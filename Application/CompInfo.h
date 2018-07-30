@@ -8,26 +8,19 @@
 using namespace std;
 using namespace Primitive;
 
-enum Type {
-    NONE, INT, UINT, LONG, FLOAT, DOUBLE, STRING
-};
-
 class Property {
     string _name;
     Object* _value;
 public:
-    Type type;
     Signal<> onChange;
     const string& name;
 
     Property(): name(_name) {
-        type = NONE;
         _name = "";
         _value = NULL;
     }
 
-    Property(string name, Type type, Object* value): name(_name) {
-        this->type = type;
+    Property(string name, Object* value): name(_name) {
         this->_name = name;
         this->_value = value;
     }
@@ -36,7 +29,7 @@ public:
         if(_value) delete _value;
     }
 
-    void setName(string name){
+    void setName(string name) {
         _name = name;
     }
 

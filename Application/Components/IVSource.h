@@ -1,5 +1,5 @@
-#ifndef __INDEP_V_SOURCE_H_
-#define __INDEP_V_SOURCE_H_
+#ifndef __I_V_SOURCE_H_
+#define __I_V_SOURCE_H_
 
 #include "../Component.h"
 #include "ComponentShape.h"
@@ -7,7 +7,7 @@
 using namespace std;
 using namespace Math;
 
-class IndepVSource : public Component {
+class IVSource : public Component {  // Independent Voltage Source
     ComponentShape _shape;
     bool _ready;
     bool _delete;
@@ -17,7 +17,7 @@ class IndepVSource : public Component {
     int _current_col;
     float _flow;
 public:
-    IndepVSource(int, int);
+    IVSource(int, int);
     void Draw(const Cairo::RefPtr<Cairo::Context>& cr);
     bool IsReady();
     void UpdateProperties(Matrix&);
@@ -26,7 +26,7 @@ public:
     void SetEquation(Matrix&, Matrix&, int, int&, int&);
     bool IsInside(int, int);
     void PropertyChanged(void);
-    ~IndepVSource();
+    ~IVSource();
 };
 
 #endif

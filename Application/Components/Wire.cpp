@@ -2,7 +2,7 @@
 
 Wire::Wire(): p0(), p1() {
     _firstClick = _secondClick = false;
-    _id = CompID::WIRE;
+    _id = Cid::WIRE;
     _delete = false;
     _drawMenu = false;
     _voltage = 0.0;
@@ -71,8 +71,8 @@ void Wire::MouseClickEvent(int button, int state, int x, int y){
     }
 }
 
-void Wire::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, int& curr_col){
-    if(!_checked){
+void Wire::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, int& curr_col) {
+    if(!_checked) {
         _current_col = curr_col;
         m.set(row, curr_col++, 1);
         cout << "W N0: " << _nodes[0]->info->number << endl;
@@ -94,7 +94,7 @@ void Wire::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, int& c
     _checked = true;
 }
 
-bool Wire::IsInside(int x, int y){
+bool Wire::IsInside(int x, int y) {
     double ang2 = type*3.1415926/2 - ang;
     Point p(x,y);
     Vector v(p0, p);
@@ -103,6 +103,6 @@ bool Wire::IsInside(int x, int y){
     return _dimensions.isInside(p0.x+v.x, p0.y+v.y);
 }
 
-Wire::~Wire(){
+Wire::~Wire() {
 
 }

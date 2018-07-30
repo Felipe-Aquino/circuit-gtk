@@ -30,20 +30,21 @@ void EditDialog::generate_layout() {
         grid->attach(*value, 1, i++, 2, 1);
 
         Primitive::Object* o = p->getValue();
-        if(p->type == INT) {
-            int v = 0;
-            o->load(v);
-            value->set_text(to_string(v));
-        }
-        else if(p->type == FLOAT) {
-            float v = 0.0;
-            o->load(v);
-            value->set_text(to_string(v));
-        }
-        else if(p->type == STRING) {
-            string v;
-            o->load(v);
-            value->set_text(v);
+        switch(o->type) {
+        case INT: {
+            auto v = dynamic_cast<Primitive::Int*>(o);
+            value->set_text(to_string(v->get()));
+        } break;
+        case FLOAT: {
+            auto v = dynamic_cast<Primitive::Float*>(o);
+            value->set_text(to_string(v->get()));
+        } break;
+        case STRING: {
+            auto v = dynamic_cast<Primitive::String*>(o);
+            value->set_text(v->get());
+        } break;
+        default:
+            break;
         }
         entries.push_back(value);
     }
@@ -58,20 +59,23 @@ void EditDialog::save(){
     for(auto* p: info.properties) {
         auto* value = entries[i++];
 
-        switch(p->type) {
-        case INT:
-            o = new Int(atof(value->get_text().c_str()));
-            break;
-        case FLOAT:
-            o = new Float(atof(value->get_text().c_str()));
-            break;
-        case STRING:
-            o = new String(value->get_text());
-            break;
+        o = p->getValue();
+        switch(o->type) {
+        case INT: {
+            auto v = dynamic_cast<Primitive::Int*>(o);
+            v->set(atoi(value->get_text().c_str()));
+        } break;
+        case FLOAT: {
+            auto v = dynamic_cast<Primitive::Float*>(o);
+            v->set(atof(value->get_text().c_str()));
+        } break;
+        case STRING: {
+            auto v = dynamic_cast<Primitive::String*>(o);
+            v->set(value->get_text());
+        } break;
         default:
             break;
         }
-        p->setValue(o);
     }
 }
 

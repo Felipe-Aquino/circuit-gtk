@@ -1,6 +1,6 @@
 #include "GtkCoreWindow.h"
 
-GtkCoreWindow::GtkCoreWindow(): Gtk::ApplicationWindow(), _box(Gtk::ORIENTATION_VERTICAL), _gtkDraw(), id(0) {
+GtkCoreWindow::GtkCoreWindow(): Gtk::ApplicationWindow(), _box(), _gtkDraw() {
     set_title("Circuit");
     set_default_size(300, 100);
 
@@ -15,7 +15,7 @@ GtkCoreWindow::GtkCoreWindow(): Gtk::ApplicationWindow(), _box(Gtk::ORIENTATION_
     //Help menu:
     add_action("about", sigc::mem_fun(*this, &GtkCoreWindow::on_menu_others));
 
-    _box.add(_gtkDraw);
+    _box.pack_start(_gtkDraw, true, true, 3);
     add(_box);
 }
 

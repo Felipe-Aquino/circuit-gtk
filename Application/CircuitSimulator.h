@@ -16,7 +16,7 @@ class CircuitSimulator {
     Matrix *_b;
     Matrix *_x;
     thread *_simulation;
-    vector<Node*> _nodes;
+    vector<Node*>& _nodes;
     vector<Component*> _components;
 
     unsigned _sourceNumber;
@@ -25,6 +25,7 @@ class CircuitSimulator {
 public:
     CircuitSimulator(vector<Node*>& nodes, unsigned sourceNumber);
 
+    void Debug();
     void Start();
     void End();
 

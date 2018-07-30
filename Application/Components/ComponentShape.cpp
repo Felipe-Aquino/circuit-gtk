@@ -1,6 +1,7 @@
 #include "ComponentShape.h"
 #include "../../Useful/report.h"
 #include <cstring>
+#include <exception>
 
 #define miss_msg(attr, tag)  \
     report::format("Missing the '%' attribute in a % from svg file.", attr, tag)
@@ -33,6 +34,8 @@ bool ComponentShape::isInside(float x, float y) {
 void ComponentShape::draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     for(auto s : shapes)
         s->draw(cr);
+    for(auto* n: nodes)
+        n->dimension.draw(cr);
 }
 
 void ComponentShape::setXY(float x, float y) {
@@ -43,6 +46,11 @@ void ComponentShape::setXY(float x, float y) {
         s->setX((int)(s->getX() + dx));
         s->setY((int)(s->getY() + dy));
     }
+    for(auto* n: nodes) {
+        n->SetXY((int)(n->dimension.getX() + dx),
+                 (int)(n->dimension.getY() + dy));
+    }
+
     _container->setX(x);
     _container->setY(y);
 }
@@ -51,7 +59,7 @@ Shapes::Shape* ComponentShape::getContainerShape() {
     return _container;
 }
 
-void ComponentShape::readFromSvg(std::string path) {
+vector<Node*> ComponentShape::readFromSvg(std::string path) {
     if(path[0] == '~'){
         path.erase(0,1);
         string s(getenv("HOME"));
@@ -78,6 +86,9 @@ void ComponentShape::readFromSvg(std::string path) {
             auto* c = readCircleSVG(elem);
 
             if(attr && !strcmp(attr, "container")) _container = c;
+            else if(attr && !strcmp(attr, "node")) {
+                nodes.push_back(new Node(c->getX(), c->getY()));
+            }
             else shapes.push_back(c);
         }
         else if(elemName == "rect"){
@@ -90,6 +101,8 @@ void ComponentShape::readFromSvg(std::string path) {
 
     if(_container == NULL)
         throw SvgReaderException("Container not found!");
+
+    return nodes;
 }
 
 Shapes::Rectangle* ComponentShape::readRectSVG(TiXmlElement* element) {

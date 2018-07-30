@@ -1,14 +1,52 @@
 #include "CircuitSimulator.h"
+#include "../Useful/report.h"
+#include "../Useful/fast_gui.h"
+#include <iomanip>
 
-#define DELETE(x) delete x; x = NULL;
+#define DELETE(x) if(x) delete x; x = NULL;
 
-CircuitSimulator::CircuitSimulator(vector<Node*>& nodes, unsigned sourceNumber){
+CircuitSimulator::CircuitSimulator(vector<Node*>& nodes, unsigned sourceNumber): _nodes(nodes) {
     _b = _m = _x = NULL;
     _simulation = NULL;
 
-    _nodes = nodes;
     _sourceNumber = sourceNumber;
     _essentialNodesNumber = 0;
+}
+
+void CircuitSimulator::Debug(){
+    if(_m) {
+        fst::BeginExpander("Matrix M");
+        for(int i = 0; i < (int)_m->getRowsNumber(); ++i) {
+            std::string info = "";
+            for(int j = 0; j < (int)_m->getColsNumber(); ++j) {
+                info += report::format("%%%", std::fixed, std::setprecision(2), _m->get(i, j)) + "  ";
+            }
+            fst::Text(info);
+        }
+        fst::EndExpander();
+    }
+    if(_b) {
+        fst::BeginExpander("Matrix b");
+        for(int i = 0; i < (int)_b->getRowsNumber(); ++i) {
+            std::string info = "";
+            for(int j = 0; j < (int)_b->getColsNumber(); ++j) {
+                info += report::format("%%%", std::fixed, std::setprecision(2), _b->get(i, j)) + "  ";
+            }
+            fst::Text(info);
+        }
+        fst::EndExpander();
+    }
+    if(_x) {
+        fst::BeginExpander("Matrix x");
+        for(int i = 0; i < (int)_x->getRowsNumber(); ++i) {
+            std::string info = "";
+            for(int j = 0; j < (int)_x->getColsNumber(); ++j) {
+                info += report::format("%%%", std::fixed, std::setprecision(2), _x->get(i, j)) + "  ";
+            }
+            fst::Text(info);
+        }
+        fst::EndExpander();
+    }
 }
 
 void CircuitSimulator::Start(){
@@ -57,10 +95,16 @@ void CircuitSimulator::Start(){
 }
 
 void CircuitSimulator::End(){
-
+    DELETE(_m);
+    DELETE(_x);
+    DELETE(_b);
 }
 
 void CircuitSimulator::Run(){
+    DELETE(_m);
+    DELETE(_x);
+    DELETE(_b);
+
     int matrix_size = _nodes.size() + _sourceNumber;
 
     _m = new Matrix(matrix_size);
@@ -88,17 +132,14 @@ void CircuitSimulator::Run(){
     }
 
     _m->print();
-    _b->print();
     _x = new Matrix(matrix_size, 1);
     *_x = _m->luSolving(*_b);
-
+    _b->print();
     _x->print();
+
     UpdateNodes();
     UpdateComponents();
 
-    DELETE(_x);
-    DELETE(_b);
-    DELETE(_m);
 }
 
 void CircuitSimulator::UpdateNodes(){

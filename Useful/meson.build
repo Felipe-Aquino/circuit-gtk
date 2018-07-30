@@ -11,6 +11,7 @@ luseful = shared_library(
     'tinyxml/tinyxmlerror.cpp',
     'tinyxml/tinyxmlparser.cpp',
     'Color.cpp',
+    'fast_gui.cpp',
     'report.cpp',
     dependencies:[gtkmmdep, gtkdep]
 )

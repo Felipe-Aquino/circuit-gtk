@@ -6,8 +6,8 @@
 #include "../../Useful/tinyxml/tinyxml.h"
 #include "../../Shapes/Rectangle.h"
 #include "../../Shapes/Circle.h"
-#include <exception>
 #include <vector>
+#include "../Component.h"
 
 using namespace std;
 
@@ -16,6 +16,7 @@ class ComponentShape {
 
     Shapes::Shape* _container;
     vector<Shapes::Shape*> shapes;
+    vector<Node*> nodes;
 
 public:
     ComponentShape();
@@ -23,7 +24,7 @@ public:
     bool isInside(float x, float y);
     void setXY(float x, float y);
     Shapes::Shape* getContainerShape();
-    void readFromSvg(std::string path);
+    vector<Node*> readFromSvg(string path);
     Shapes::Rectangle* readRectSVG(TiXmlElement* element);
     Shapes::Circle* readCircleSVG(TiXmlElement* element);
     ~ComponentShape();

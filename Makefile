@@ -11,5 +11,11 @@ run:
 	@cd builddir; ninja
 	@cd builddir; ./circuit
 
+find:
+	@grep -rnw ./ -e $(info)
+
+etags:
+	@ctags -e --c-types=+l -R
+
 clean:
 	@rm -rf builddir
