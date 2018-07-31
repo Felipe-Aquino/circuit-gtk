@@ -14,6 +14,7 @@ CircuitSimulator::CircuitSimulator(vector<Node*>& nodes, unsigned sourceNumber):
 }
 
 void CircuitSimulator::Debug(){
+    fst::BeginExpander("Matrices");
     if(_m) {
         fst::BeginExpander("Matrix M");
         for(int i = 0; i < (int)_m->getRowsNumber(); ++i) {
@@ -47,6 +48,7 @@ void CircuitSimulator::Debug(){
         }
         fst::EndExpander();
     }
+    fst::EndExpander();
 }
 
 void CircuitSimulator::Start(){
@@ -131,15 +133,11 @@ void CircuitSimulator::Run(){
         }
     }
 
-    _m->print();
     _x = new Matrix(matrix_size, 1);
     *_x = _m->luSolving(*_b);
-    _b->print();
-    _x->print();
 
     UpdateNodes();
     UpdateComponents();
-
 }
 
 void CircuitSimulator::UpdateNodes(){

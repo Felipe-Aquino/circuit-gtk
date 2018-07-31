@@ -23,6 +23,8 @@ public:
     void draw(const Cairo::RefPtr<Cairo::Context>& cr);
     bool isInside(float x, float y);
     void setXY(float x, float y);
+    float getX();
+    float getY();
     Shapes::Shape* getContainerShape();
     vector<Node*> readFromSvg(string path);
     Shapes::Rectangle* readRectSVG(TiXmlElement* element);

@@ -1,4 +1,6 @@
 #include "IVSource.h"
+#include "../../Useful/report.h"
+#include "../../Useful/fast_gui.h"
 
 IVSource::IVSource(int x, int y) {
     _id = Cid::I_V_SOURCE;
@@ -24,6 +26,24 @@ IVSource::IVSource(int x, int y) {
 
 void IVSource::Draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     _shape.draw(cr);
+
+    fst::BeginExpander("ivsource");
+    fst::Text("voltage: ");
+    fst::SameLine();
+    fst::Slider(_voltage, 0, 10);
+    fst::Text(report::format("current: %", _current));
+
+    fst::BeginExpander("container");
+    fst::Text(report::format("x: %", _shape.getX()));
+    fst::Text(report::format("y: %", _shape.getY()));
+    fst::EndExpander();
+
+    fst::BeginExpander("nodes number");
+    fst::Text(report::format("0: %", _nodes[0]->info->number));
+    fst::Text(report::format("1: %", _nodes[1]->info->number));
+    fst::EndExpander();
+
+    fst::EndExpander();
 }
 
 bool IVSource::IsReady() {
@@ -32,7 +52,6 @@ bool IVSource::IsReady() {
 
 void IVSource::UpdateProperties(Matrix& x) {
     _current = _flow*x.get(_current_col, 0); // _flow sets the right direction of the current
-    cout << "S - " << "V: " << _voltage << " I: " << _current << endl;
     _checked = false;
 }
 
@@ -55,8 +74,6 @@ void IVSource::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, in
     if(!_checked){
         _current_col = curr_col;
         m.set(row, curr_col++, 1);
-        cout << "V N0: " << _nodes[0]->info->number << endl;
-        cout << "V N1: " << _nodes[1]->info->number << endl;
 
         m.set(next_free_row, _nodes[1]->info->number, -1);
         m.set(next_free_row, _nodes[0]->info->number, 1);
@@ -67,8 +84,6 @@ void IVSource::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, in
         next_free_row++;
     } else {
         m.set(row, _current_col, -1);
-        cout << "2V N0: " << _nodes[0]->info->number << endl;
-        cout << "2V N1: " << _nodes[1]->info->number << endl;
     }
 
     _checked = true;
@@ -77,9 +92,7 @@ void IVSource::SetEquation(Matrix& m, Matrix& b, int row, int& next_free_row, in
 bool IVSource::IsInside(int x, int y) { return _shape.isInside(x, y); }
 
 void IVSource::PropertyChanged(void) {
-    cout << "Voltage changed from " << _voltage;
     info.properties[0]->getValue()->load(_voltage);
-    cout << " to " << _voltage << endl;
 }
 
 IVSource::~IVSource() {

@@ -251,6 +251,7 @@ namespace fst {
     }
 
     void SameLine(void) {
+        if(frame.ignore) return;
         frame.xoffset = frame.last_xoff;
         frame.yoffset = frame.last_yoff;
     }
@@ -266,7 +267,7 @@ namespace fst {
         frame.last_yoff = frame.yoffset;
         frame.yoffset  += frame.line_height + frame.ymargin;
 
-        frame.last_xoff = frame.xoffset + txtWidth(txt) + frame.xmargin;
+        frame.last_xoff = frame.xoffset + txtAdvance(txt) + frame.xmargin;
         frame.xoffset   = frame_start.xoffset;
     }
 
@@ -363,17 +364,17 @@ namespace fst {
         int x = frame.xoffset;
         int y = -wind.yscroll + frame.yoffset + frame.line_height + 2*frame.ypad + frame.ymargin;
         int box_w = 110, box_h = frame.line_height + 2*frame.ypad;
-        float frac = v / (max - min);
+        float frac = (v - min) / (max - min);
         float new_x = x + frac*(box_w - 10);
 
-        if(frame.ignore) return;
+        if(frame.ignore || min >= max) return;
 
         if(mouse.pressed) {
             if(mouse_inside_rect(x + wind.x + frame.x, y + wind.y + frame.y - box_h, box_w, box_h)) {
                 frac = (mouse.x - (wind.x + frame.x + x))*1.0 / (box_w - 10.0);
                 v = min + (max - min)*frac;
-                new_x = mouse.x - (wind.x + frame.x + x);
-                if(frac > 1.0) new_x = box_w - 10;
+                new_x = x + (box_w - 10)*frac;
+                if(frac > 1.0) new_x = x + box_w - 10;
             }
         }
 
@@ -385,7 +386,7 @@ namespace fst {
 
         std::string number = std::to_string(v);
         number.erase(number.size() - 3);
-        addText(x + box_w / 2 - txtWidth(number)/2, y - (box_h - wind.font_size) / 2, number);
+        addText(x + box_w / 2 - txtAdvance(number)/2, y - (box_h - wind.font_size) / 2, number);
 
         frame.last_yoff = frame.yoffset;
         frame.yoffset += frame.line_height + frame.ymargin;

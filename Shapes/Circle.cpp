@@ -1,6 +1,8 @@
 #include "Circle.h"
 
 namespace Shapes {
+    const float two_pi = 2 * 3.1415926;
+
     Circle::Circle(): _r(0) {
         _x = 0;
         _y = 0;
@@ -41,16 +43,12 @@ namespace Shapes {
     }
 
     void Circle::draw(const Cairo::RefPtr<Cairo::Context>& cr) {
-        const float two_pi = 2 * 3.1415926;
-
         cr->set_source_rgb(_color.r(), _color.g(), _color.b());
         cr->arc(_x, _y, _r, 0, two_pi);
         cr->fill();
     }
 
     void Circle::drawCircunference(const Cairo::RefPtr<Cairo::Context>& cr) {
-        const float two_pi = 2 * 3.1415926;
-
         cr->set_source_rgb(_color.r(), _color.g(), _color.b());
         cr->arc(_x, _y, _r, 0, two_pi);
         cr->stroke();

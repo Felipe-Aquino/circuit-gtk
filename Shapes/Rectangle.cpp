@@ -1,4 +1,6 @@
 #include "Rectangle.h"
+#include <string>
+#include "../Useful/fast_gui.h"
 
 namespace Shapes {
 

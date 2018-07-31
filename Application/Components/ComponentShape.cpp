@@ -55,6 +55,14 @@ void ComponentShape::setXY(float x, float y) {
     _container->setY(y);
 }
 
+float ComponentShape::getX() {
+    return _container->getX();
+}
+
+float ComponentShape::getY() {
+    return _container->getY();
+}
+
 Shapes::Shape* ComponentShape::getContainerShape() {
     return _container;
 }
